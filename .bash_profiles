@@ -1,0 +1,28 @@
+# editor
+export EDITOR=/usr/bin/vi
+
+# java
+export JAVA_HOME=$(/usr/libexec/java_home)
+
+# perlbrew
+source ~/perl5/perlbrew/etc/bashrc
+
+# pyenv
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
+# rbenv
+eval "$(rbenv init -)"
+
+# hbase
+export HBASE_HOME=$HOME/bin/hbase
+PATH=$HBASE_HOME/bin:$PATH
+
+# brew
+alias brewall='brew update && brew cask update && brew cleanup && brew cask cleanup && brew upgrade && brew doctor && brew cask doctor'
+
+# bash_profile.d
+for script in $HOME/bash_profile.d/*; do
+	if [ -r $script ]; then
+		source $script
+	fi
+done
