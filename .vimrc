@@ -30,8 +30,13 @@ set background=dark
 " makefile
 autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0
 
-map <C-K> :pyf /usr/local/Cellar/clang-format/2016-03-29/share/clang/clang-format.py<cr>
-imap <C-K> <c-o>:pyf /usr/local/Cellar/clang-format/2016-03-29/share/clang/clang-format.py<cr>
+:function ClangFormat()
+:  let l:lines="all"
+:  pyf /usr/local/Cellar/clang-format/2016-03-29/share/clang/clang-format.py
+:endfunction
+
+map <C-K> :call ClangFormat()<cr>
+imap <C-K> <c-o> :call ClangFormat()<cr>
 
 
 " required for Vundle
