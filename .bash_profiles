@@ -1,6 +1,10 @@
 # editor
 export EDITOR=/usr/bin/vi
 
+# go
+export GOPATH=$HOME/workspaces/goprjs
+PATH=$GOPATH/bin:$PATH
+
 # java
 export JAVA_HOME=$(/usr/libexec/java_home)
 
@@ -16,6 +20,9 @@ eval "$(rbenv init -)"
 # hbase
 export HBASE_HOME=$HOME/bin/hbase
 PATH=$HBASE_HOME/bin:$PATH
+
+# path
+export PATH=$PATH
 
 # brew
 alias brewall='brew update && brew cask update && brew cleanup && brew cask cleanup && brew upgrade && brew doctor && brew cask doctor'
