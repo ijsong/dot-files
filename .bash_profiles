@@ -1,8 +1,8 @@
 # editor
-export EDITOR=/usr/bin/vi
+export EDITOR=/usr/local/bin/vi
 
 # go
-export GOPATH=$HOME/workspaces/goprjs
+export GOPATH=$HOME/workspaces
 PATH=$GOPATH/bin:$PATH
 
 # java
@@ -25,7 +25,7 @@ PATH=$HBASE_HOME/bin:$PATH
 export PATH=$PATH
 
 # brew
-alias brewall='brew update && brew cask update && brew cleanup && brew cask cleanup && brew upgrade && brew doctor && brew cask doctor'
+alias brewall='brew update; brew cask update; brew cleanup; brew cask cleanup; brew upgrade; brew doctor; brew cask doctor'
 
 # bash_profile.d
 for script in $HOME/bash_profile.d/*; do
