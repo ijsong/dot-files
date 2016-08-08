@@ -40,13 +40,49 @@ set backspace=indent,eol,start
 " makefile
 autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0
 
-:function ClangFormat()
+:function ClangFormatAllLines()
 :  let l:lines="all"
-:  pyf /usr/local/Cellar/clang-format/2016-03-29/share/clang/clang-format.py
+:  pyf /usr/local/Cellar/clang-format/*/share/clang/clang-format.py
+:endfunction
+
+:function ClangFormat()
+:  pyf /usr/local/Cellar/clang-format/*/share/clang/clang-format.py
 :endfunction
 
 map <C-I> :call ClangFormat()<cr>
 imap <C-I> <c-o> :call ClangFormat()<cr>
+map <C-K> :call ClangFormatAllLines()<cr>
+imap <C-K> <c-o> :call ClangFormatAllLines()<cr>
+
+
+" required for Vundle
+filetype off
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" Plugin 'rip-rip/clang_complete'
+" let g:clang_library_path = '/Library/Developer/CommandLineTools/usr/lib/libclang.dylib'
+" let g:clang_close_preview = 1
+
+Plugin 'octol/vim-cpp-enhanced-highlight'
+let g:cpp_class_scope_highlight = 1
+
+Plugin 'shougo/neocomplete.vim'
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
 
 
 " required for Vundle
