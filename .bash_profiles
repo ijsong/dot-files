@@ -21,11 +21,15 @@ eval "$(rbenv init -)"
 export HBASE_HOME=$HOME/bin/hbase
 PATH=$HBASE_HOME/bin:$PATH
 
+# arcanist
+PATH=$HOME/workspaces/arcanist/bin:$PATH
+
 # path
+PATH=/usr/local/sbin:$PATH
 export PATH=$PATH
 
 # brew
-alias brewall='brew update; brew cask update; brew cleanup; brew cask cleanup; brew upgrade; brew doctor; brew cask doctor'
+alias brewall='pyenv global system; brew update; brew cask update; brew cleanup; brew cask cleanup; brew upgrade; brew doctor; brew cask doctor; pyenv global 2.7.12'
 
 # bash_profile.d
 for script in $HOME/bash_profile.d/*; do
