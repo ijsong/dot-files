@@ -46,6 +46,11 @@ autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0
 set colorcolumn=80
 highlight ColorColumn ctermbg=darkgray
 
+" quickfix
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+
 " clangformat
 :function ClangFormatAllLines()
 :  let l:lines="all"
@@ -159,6 +164,7 @@ let g:go_metalinter_autosave = 1
 let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 let g:go_def_mode = 'godef'
 let g:go_auto_sameids = 1
+let g:go_list_type = "quickfix"
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
         let l:file = expand('%')
@@ -185,6 +191,10 @@ au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
 au FileType go nmap <Leader>s <Plug>(go-implements)
 au FileType go nmap <Leader>i <Plug>(go-info)
 au FileType go nmap <Leader>e <Plug>(go-rename)
+au Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+au Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+au Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+au Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 
 " scala
 Plugin 'derekwyatt/vim-scala'
