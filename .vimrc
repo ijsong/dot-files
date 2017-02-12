@@ -37,6 +37,7 @@ set foldlevel=20
 set backspace=indent,eol,start
 set autowrite
 set updatetime=200
+set cursorline
 
 " makefile
 autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0
