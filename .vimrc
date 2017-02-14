@@ -11,7 +11,10 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'L9'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
+Plugin 'shougo/neocomplete.vim'
+Plugin 'rhysd/vim-clang-format'
 Plugin 'fatih/vim-go'
 Plugin 'derekwyatt/vim-scala'
 
@@ -68,7 +71,6 @@ set history=1000
 set undolevels=1000
 set autoread
 set autowrite
-set mouse=a
 if v:version >= 704
   set regexpengine=1
 endif
@@ -83,11 +85,12 @@ map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 
 " tags
-set tags=./tags;/
+set tags+=./tags;/
 
 " filetype-specific
-let xml_use_xhtml = 1
 let g:is_posix = 1
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
 autocmd vimrc BufEnter *.conf setf conf
 augroup vimrc
@@ -124,9 +127,69 @@ nnoremap <leader>w :w!<cr>
 " vim-colorschemes
 colorscheme chroma
 
-" tagbar'
+" ctrlp
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_root_markers = ['pom.xml', '.gitignore', 'CMakeLists.txt']
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn|DS_Store)$',
+  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg|o|pyc)$',
+  \ 'link': 'some_bad_symbolic_links'}
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'dir', 'rtscript',
+  \ 'undo', 'line', 'changes', 'mixed', 'bookmarkdir']
+
+" tagbar
 let g:tagbar_sort = 0
 nnoremap <F9> :TagbarToggle<CR>
+
+" neocomplete
+let g:acp_enableAtStartup = 0
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#sources#dictionary#dictionaries = {
+  \ 'default' : '',
+  \ 'vimshell' : $HOME.'/.vimshell_hist',
+  \ 'scheme' : $HOME.'/.gosh_completions'}
+if !exists('g:neocomplete#keyword_patterns')
+  let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+        return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+augroup virmc
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup END
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" vim-clang-format
+let g:clang_format#code_style = 'google'
+let g:clang_format#command = '$HOME/bin/clang/bin/clang-format'
+let g:clang_format#detect_style_file = 1
+let g:clang_format#auto_format = 0
+let g:clang_format#auto_format_on_insert_leave = 0
+let g:clang_format#auto_formatexpr = 0
+nmap <Leader>cft :ClangFormatAutoToggle<CR>
+augroup vimrc
+  autocmd FileType c,cpp ClangFormatAutoEnable
+  autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+  autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+augroup END
 
 " vim-go
 let g:go_highlight_types = 1
