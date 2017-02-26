@@ -13,8 +13,10 @@ Plugin 'L9'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
+Plugin 'tpope/vim-fugitive'
 Plugin 'shougo/neocomplete.vim'
 Plugin 'rhysd/vim-clang-format'
+Plugin 'scrooloose/syntastic'
 Plugin 'fatih/vim-go'
 Plugin 'derekwyatt/vim-scala'
 
@@ -142,6 +144,9 @@ let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'dir', 'rtscript',
 let g:tagbar_sort = 0
 nnoremap <F9> :TagbarToggle<CR>
 
+" fugitive
+"
+
 " neocomplete
 let g:acp_enableAtStartup = 0
 let g:neocomplete#enable_at_startup = 1
@@ -190,6 +195,28 @@ augroup vimrc
   autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
   autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 augroup END
+
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 2
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_aggregate_errors = 1
+let g:syntastic_quiet_messages = { "type": "style" }
+" syntastic - c++
+let g:syntastic_cpp_no_include_search = 1
+let g:syntastic_cpp_no_default_include_dirs = 1
+let g:syntastic_cpp_auto_refresh_includes = 1
+let g:syntastic_cpp_remove_include_errors = 1
+let g:syntastic_loc_list_height = 5
+let g:syntastic_cpp_include_dirs = [ '.', 'include', 'includes', 'inc', 'headers' ]
+let g:syntastic_cpp_compiler_options = '-std=c++11 -Wall -Wextra -Wpedantic -Weffc++'
+" syntastic - go
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 
 " vim-go
 let g:go_highlight_types = 1
