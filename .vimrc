@@ -11,6 +11,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'L9'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'brookhong/cscope.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-fugitive'
@@ -82,8 +83,8 @@ set foldlevelstart=99
 set noerrorbells visualbell t_vb=
 
 " quickfix
-map <C-n> :cnext<CR>
-map <C-m> :cprevious<CR>
+"map <C-n> :cnext<CR>
+"map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 
 " tags
@@ -129,6 +130,39 @@ nnoremap <leader>w :w!<cr>
 " vim-colorschemes
 colorscheme chroma
 
+" cscope
+nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
+nnoremap <leader>l :call ToggleLocationList()<CR>
+let g:cscope_auto_update = 1
+let g:cscope_silent = 0
+let g:cscope_interested_files = '\.c$\|\.cpp$\|\.h$\|\.hpp$|\.cc$'
+" The following maps all invoke one of the following cscope search types:
+"
+"   's'   symbol: find all references to the token under cursor
+"   'g'   global: find global definition(s) of the token under cursor
+"   'c'   calls:  find all calls to the function name under cursor
+"   't'   text:   find all instances of the text under cursor
+"   'e'   egrep:  egrep search for the word under cursor
+"   'f'   file:   open the filename under cursor
+"   'i'   includes: find files that include the filename under cursor
+"   'd'   called: find functions that function under cursor calls
+" s: Find this C symbol
+nnoremap  <leader>fs :call CscopeFind('s', expand('<cword>'))<CR>
+" g: Find this definition
+nnoremap  <leader>fg :call CscopeFind('g', expand('<cword>'))<CR>
+" d: Find functions called by this function
+nnoremap  <leader>fd :call CscopeFind('d', expand('<cword>'))<CR>
+" c: Find functions calling this function
+nnoremap  <leader>fc :call CscopeFind('c', expand('<cword>'))<CR>
+" t: Find this text string
+nnoremap  <leader>ft :call CscopeFind('t', expand('<cword>'))<CR>
+" e: Find this egrep pattern
+nnoremap  <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
+" f: Find this file
+nnoremap  <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
+" i: Find files #including this file
+nnoremap  <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
+
 " ctrlp
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_root_markers = ['pom.xml', '.gitignore', 'CMakeLists.txt']
@@ -137,8 +171,6 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg|o|pyc)$',
   \ 'link': 'some_bad_symbolic_links'}
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'dir', 'rtscript',
-  \ 'undo', 'line', 'changes', 'mixed', 'bookmarkdir']
 
 " tagbar
 let g:tagbar_sort = 0
