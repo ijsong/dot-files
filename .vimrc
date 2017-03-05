@@ -11,6 +11,8 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'L9'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'brookhong/cscope.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
@@ -29,6 +31,12 @@ filetype plugin indent on
 augroup vimrc
   autocmd!
 augroup END
+
+" key mappings
+" our <leader> will be the space key
+let mapleader=" "
+" our <localleader> will be the '-' key
+let maplocalleader="-"
 
 " set utf-8 encoding
 set enc=utf-8
@@ -83,9 +91,10 @@ set foldlevelstart=99
 set noerrorbells visualbell t_vb=
 
 " quickfix
-"map <C-n> :cnext<CR>
-"map <C-m> :cprevious<CR>
-nnoremap <leader>a :cclose<CR>
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+map <leader>a :cclose<CR>
+" nnoremap <leader>a :cclose<CR>
 
 " tags
 set tags+=./tags;/
@@ -107,11 +116,7 @@ autocmd vimrc FileType make set noexpandtab shiftwidth=8 softtabstop=0
 " turn syntax highlighting on
 syntax on
 
-" key mappings
-" our <leader> will be the space key
-let mapleader=" "
-" our <localleader> will be the '-' key
-let maplocalleader="-"
+
 " With this map, we can select some text in visual mode and by invoking the map,
 " have the selection automatically filled in as the search text and the cursor
 " placed in the position for typing the replacement text. Also, this will ask
@@ -129,6 +134,10 @@ nnoremap <leader>w :w!<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-colorschemes
 colorscheme chroma
+
+" airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_symbols_ascii = 1
 
 " cscope
 nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
@@ -183,6 +192,8 @@ nnoremap <F9> :TagbarToggle<CR>
 let g:acp_enableAtStartup = 0
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#enable_auto_close_preview = 1
+set completeopt-=preview
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#sources#dictionary#dictionaries = {
   \ 'default' : '',
@@ -266,10 +277,10 @@ let g:go_fmt_fail_silently = 1
 let g:go_fmt_autosave = 1
 let g:go_play_open_browser = 0
 let g:go_auto_type_info = 1
-let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
-let g:go_metalinter_autosave = 1
+let g:go_metalinter_autosave = 0
 let g:go_metalinter_autosave_enabled = ['vet', 'golint']
-let g:go_def_mode = 'godef'
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+" let g:go_def_mode = 'godef'
 let g:go_auto_sameids = 1
 let g:go_list_type = 'quickfix'
 " run :GoBuild or :GoTestCompile based on the go file
@@ -282,6 +293,7 @@ function! s:build_go_files()
   endif
 endfunction
 augroup vimrc
+  autocmd BufNewFile,BufRead *.go setlocal tabstop=4 shiftwidth=4
   autocmd FileType go set number fo+=croq tw=100
   autocmd FileType go set makeprg=go\ build\ .
   autocmd FileType go nmap <leader>r <Plug>(go-run)
@@ -297,6 +309,7 @@ augroup vimrc
   autocmd FileType go nmap <Leader>s <Plug>(go-implements)
   autocmd FileType go nmap <Leader>i <Plug>(go-info)
   autocmd FileType go nmap <Leader>e <Plug>(go-rename)
+  autocmd FileType go nmap <Leader>fc <Plug>(go-referrers)
   autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
   autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
   autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
