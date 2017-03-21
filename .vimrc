@@ -13,15 +13,19 @@ Plugin 'L9'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'Yggdroot/indentLine'
 Plugin 'brookhong/cscope.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-fugitive'
-Plugin 'shougo/neocomplete.vim'
+Plugin 'Valloric/YouCompleteMe'
+" Plugin 'shougo/neocomplete.vim'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'scrooloose/syntastic'
 Plugin 'fatih/vim-go'
 Plugin 'derekwyatt/vim-scala'
+Plugin 'tpope/vim-markdown'
+Plugin 'suan/vim-instant-markdown'
 
 " all of your plugins must be added before the following line
 call vundle#end()
@@ -89,6 +93,8 @@ set updatetime=200
 set foldmethod=indent
 set foldlevelstart=99
 set noerrorbells visualbell t_vb=
+set wildmenu
+set lazyredraw
 
 " quickfix
 map <C-n> :cnext<CR>
@@ -110,12 +116,19 @@ augroup vimrc
   " write.
   autocmd BufRead,BufWritePre,FileWritePre * silent! %s/[\r \t]\+$//
 augroup END
+
 autocmd vimrc FileType text,markdown,gitcommit set nocindent
 autocmd vimrc FileType make set noexpandtab shiftwidth=8 softtabstop=0
 
 " turn syntax highlighting on
 syntax on
 
+" fold
+set foldenable
+set foldlevelstart=10
+set foldnestmax=10
+set foldmethod=indent
+nnoremap <leader> za
 
 " With this map, we can select some text in visual mode and by invoking the map,
 " have the selection automatically filled in as the search text and the cursor
@@ -138,6 +151,8 @@ colorscheme chroma
 " airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_symbols_ascii = 1
+
+" indent
 
 " cscope
 nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
@@ -186,44 +201,52 @@ let g:tagbar_sort = 0
 nnoremap <F9> :TagbarToggle<CR>
 
 " fugitive
-"
 
-" neocomplete
-let g:acp_enableAtStartup = 0
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#enable_auto_close_preview = 1
-set completeopt-=preview
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#sources#dictionary#dictionaries = {
-  \ 'default' : '',
-  \ 'vimshell' : $HOME.'/.vimshell_hist',
-  \ 'scheme' : $HOME.'/.gosh_completions'}
-if !exists('g:neocomplete#keyword_patterns')
-  let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-        return pumvisible() ? "\<C-y>" : "\<CR>"
-endfunction
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-augroup virmc
-  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-augroup END
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+" YouCompleteMe
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_min_num_identifier_candidate_chars = 4
+" let g:ycm_filetype_specific_completion_to_disable = {'javascript': 1}
+nnoremap <leader>yf :YcmForceCompileAndDiagnostics<cr>
+nnoremap <leader>yg :YcmCompleter GoTo<CR>
+nnoremap <leader>yd :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>yc :YcmCompleter GoToDeclaration<CR>
+
+"" neocomplete
+"let g:acp_enableAtStartup = 0
+"let g:neocomplete#enable_at_startup = 1
+"let g:neocomplete#enable_smart_case = 1
+"let g:neocomplete#enable_auto_close_preview = 1
+"set completeopt-=preview
+"let g:neocomplete#sources#syntax#min_keyword_length = 3
+"let g:neocomplete#sources#dictionary#dictionaries = {
+"  \ 'default' : '',
+"  \ 'vimshell' : $HOME.'/.vimshell_hist',
+"  \ 'scheme' : $HOME.'/.gosh_completions'}
+"if !exists('g:neocomplete#keyword_patterns')
+"  let g:neocomplete#keyword_patterns = {}
+"endif
+"let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+"inoremap <expr><C-g>     neocomplete#undo_completion()
+"inoremap <expr><C-l>     neocomplete#complete_common_string()
+"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+"function! s:my_cr_function()
+"        return pumvisible() ? "\<C-y>" : "\<CR>"
+"endfunction
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+"inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+"inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+"augroup virmc
+"  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+"augroup END
+"if !exists('g:neocomplete#sources#omni#input_patterns')
+"  let g:neocomplete#sources#omni#input_patterns = {}
+"endif
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
 " vim-clang-format
 let g:clang_format#code_style = 'google'
@@ -243,6 +266,8 @@ augroup END
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 2
 let g:syntastic_check_on_open = 1
@@ -259,7 +284,14 @@ let g:syntastic_cpp_include_dirs = [ '.', 'include', 'includes', 'inc', 'headers
 let g:syntastic_cpp_compiler_options = '-std=c++11 -Wall -Wextra -Wpedantic -Weffc++'
 " syntastic - go
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+let g:syntastic_mode_map = {
+  \ 'mode': 'active',
+  \ 'passive_filetypes': ['go'] }
+" syntastic - python
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_flake8_args = '--max-line-length=80 ' .
+  \ '--max-complexity=10 --ignore=E111,E114,E121,E125,E126,E127,E128,E129,' .
+  \ 'E131,E133,E201,E202,E203,E211,E221,E222,E241,E251,E261,E303,E402,W503'
 
 " vim-go
 let g:go_highlight_types = 1
@@ -315,3 +347,10 @@ augroup vimrc
   autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
   autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 augroup END
+
+" markdown
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+augroup vimrc
+  autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+augroup END
+
