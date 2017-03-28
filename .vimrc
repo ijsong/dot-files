@@ -90,8 +90,6 @@ if v:version >= 704
   set regexpengine=1
 endif
 set updatetime=200
-set foldmethod=indent
-set foldlevelstart=99
 set noerrorbells visualbell t_vb=
 set wildmenu
 set lazyredraw
@@ -128,7 +126,6 @@ set foldenable
 set foldlevelstart=10
 set foldnestmax=10
 set foldmethod=indent
-nnoremap <leader> za
 
 " With this map, we can select some text in visual mode and by invoking the map,
 " have the selection automatically filled in as the search text and the cursor
