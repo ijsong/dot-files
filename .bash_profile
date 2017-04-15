@@ -17,17 +17,20 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 # rbenv
 eval "$(rbenv init -)"
 
-# hbase
-export HBASE_HOME=$HOME/bin/hbase
-PATH=$HBASE_HOME/bin:$PATH
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # arcanist
 PATH=$HOME/workspaces/arcanist/bin:$PATH
 
 # bash-git-prompt
+# alternative: https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh
 if [ -f /usr/local/share/gitprompt.sh ]; then
-        GIT_PROMPT_THEME=Default
-        . /usr/local/share/gitprompt.sh
+  GIT_PROMPT_ONLY_IN_REPO=1
+  GIT_PROMPT_SHOW_UNTRACKED_FILES=normal
+  GIT_PROMPT_THEME=Default
+  . /usr/local/share/gitprompt.sh
 fi
 
 # coreutils
@@ -42,8 +45,8 @@ alias brewall='brew update; brew cleanup; brew cask cleanup; brew upgrade; brew 
 
 # bash_profile.d
 for script in $HOME/bash_profile.d/*; do
-	if [ -r $script ]; then
-		source $script
-	fi
+  if [ -r $script ]; then
+    source $script
+  fi
 done
 
