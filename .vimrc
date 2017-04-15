@@ -14,12 +14,10 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'Yggdroot/indentLine'
-Plugin 'brookhong/cscope.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Valloric/YouCompleteMe'
-" Plugin 'shougo/neocomplete.vim'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'scrooloose/syntastic'
 Plugin 'fatih/vim-go'
@@ -151,38 +149,38 @@ let g:airline_symbols_ascii = 1
 
 " indent
 
-" cscope
-nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
-nnoremap <leader>l :call ToggleLocationList()<CR>
-let g:cscope_auto_update = 1
-let g:cscope_silent = 0
-let g:cscope_interested_files = '\.c$\|\.cpp$\|\.h$\|\.hpp$|\.cc$'
-" The following maps all invoke one of the following cscope search types:
-"
-"   's'   symbol: find all references to the token under cursor
-"   'g'   global: find global definition(s) of the token under cursor
-"   'c'   calls:  find all calls to the function name under cursor
-"   't'   text:   find all instances of the text under cursor
-"   'e'   egrep:  egrep search for the word under cursor
-"   'f'   file:   open the filename under cursor
-"   'i'   includes: find files that include the filename under cursor
-"   'd'   called: find functions that function under cursor calls
-" s: Find this C symbol
-nnoremap  <leader>fs :call CscopeFind('s', expand('<cword>'))<CR>
-" g: Find this definition
-nnoremap  <leader>fg :call CscopeFind('g', expand('<cword>'))<CR>
-" d: Find functions called by this function
-nnoremap  <leader>fd :call CscopeFind('d', expand('<cword>'))<CR>
-" c: Find functions calling this function
-nnoremap  <leader>fc :call CscopeFind('c', expand('<cword>'))<CR>
-" t: Find this text string
-nnoremap  <leader>ft :call CscopeFind('t', expand('<cword>'))<CR>
-" e: Find this egrep pattern
-nnoremap  <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
-" f: Find this file
-nnoremap  <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
-" i: Find files #including this file
-nnoremap  <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
+" cscope - noplugins
+if has('cscope')
+  set cscopetag
+  set csto=0
+
+  if $CSCOPE_DB == '' && filereadable('cscope.out')
+    let $CSCOPE_DB = 'cscope.out'
+  endif
+  if $CSCOPE_DB != ''
+    cs add $CSCOPE_DB
+  endif
+
+  set cscopeverbose
+  " The following maps all invoke one of the following cscope search types:
+  "
+  "   's'   symbol: find all references to the token under cursor
+  "   'g'   global: find global definition(s) of the token under cursor
+  "   'c'   calls:  find all calls to the function name under cursor
+  "   't'   text:   find all instances of the text under cursor
+  "   'e'   egrep:  egrep search for the word under cursor
+  "   'f'   file:   open the filename under cursor
+  "   'i'   includes: find files that include the filename under cursor
+  "   'd'   called: find functions that function under cursor calls
+  nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+  nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+  nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+endif
 
 " ctrlp
 let g:ctrlp_working_path_mode = 'ra'
@@ -202,48 +200,10 @@ nnoremap <F9> :TagbarToggle<CR>
 " YouCompleteMe
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_min_num_identifier_candidate_chars = 4
-" let g:ycm_filetype_specific_completion_to_disable = {'javascript': 1}
 nnoremap <leader>yf :YcmForceCompileAndDiagnostics<cr>
 nnoremap <leader>yg :YcmCompleter GoTo<CR>
 nnoremap <leader>yd :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>yc :YcmCompleter GoToDeclaration<CR>
-
-"" neocomplete
-"let g:acp_enableAtStartup = 0
-"let g:neocomplete#enable_at_startup = 1
-"let g:neocomplete#enable_smart_case = 1
-"let g:neocomplete#enable_auto_close_preview = 1
-"set completeopt-=preview
-"let g:neocomplete#sources#syntax#min_keyword_length = 3
-"let g:neocomplete#sources#dictionary#dictionaries = {
-"  \ 'default' : '',
-"  \ 'vimshell' : $HOME.'/.vimshell_hist',
-"  \ 'scheme' : $HOME.'/.gosh_completions'}
-"if !exists('g:neocomplete#keyword_patterns')
-"  let g:neocomplete#keyword_patterns = {}
-"endif
-"let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-"inoremap <expr><C-g>     neocomplete#undo_completion()
-"inoremap <expr><C-l>     neocomplete#complete_common_string()
-"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-"function! s:my_cr_function()
-"        return pumvisible() ? "\<C-y>" : "\<CR>"
-"endfunction
-"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-"inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-"inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-"augroup virmc
-"  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-"  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-"  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-"  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-"  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-"augroup END
-"if !exists('g:neocomplete#sources#omni#input_patterns')
-"  let g:neocomplete#sources#omni#input_patterns = {}
-"endif
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
 " vim-clang-format
 let g:clang_format#code_style = 'google'
@@ -253,7 +213,7 @@ let g:clang_format#auto_format_on_insert_leave = 0
 let g:clang_format#auto_formatexpr = 0
 nmap <Leader>cft :ClangFormatAutoToggle<CR>
 augroup vimrc
-  autocmd FileType c,cpp ClangFormatAutoEnable
+  " autocmd FileType c,cpp ClangFormatAutoEnable
   autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
   autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 augroup END
