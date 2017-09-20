@@ -9,7 +9,6 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'L9'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -37,20 +36,25 @@ augroup END
 " key mappings
 " our <leader> will be the space key
 let mapleader=" "
-" our <localleader> will be the '-' key
-let maplocalleader="-"
+
+" dev mode
+let sap_path = $HOME . '/dotfiles/vim/sap_settings.vim'
+let at_sap = filereadable( sap_path )
 
 " set utf-8 encoding
 set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
 
+" file format
+set fileformat=unix
+set fileformats=unix,dos,mac
+
 " display
 set background=dark
 set number
 set ruler
 set title
-set undofile
 set cursorline
 set showmode
 set showcmd
@@ -58,30 +62,47 @@ set showmatch
 set matchtime=2
 set scrolloff=2
 set cmdheight=2
+set wrap
 set textwidth=80
 set colorcolumn=+1
 
-" editor
+" search
+set hlsearch
 set ignorecase
 set smartcase
-set nohlsearch
 set incsearch
-set gdefault
+set magic
+
+" indent, tab and space
+" http://vimdoc.sourceforge.net/htmldoc/indent.html#cinoptions-values
+set cino=b1,g0,N-s,t0,(0,W4
 set autoindent
 set copyindent
 set cindent
-set cino=b1,g0,N-s,t0,(0,W4
+set expandtab
 set smarttab
-set magic
+autocmd vimrc FileType make set noexpandtab shiftwidth=8 softtabstop=0
+if at_sap
+  autocmd vimrc FileType c,cpp
+    \ set noexpandtab |
+    \ set tabstop=4 |
+    \ set shiftwidth=4 |
+    \ set softtabstop=4 |
+    \ set textwidth=80
+else
+  autocmd vimrc FileType c,cpp
+    \ set noexpandtab |
+    \ set tabstop=2 |
+    \ set shiftwidth=2 |
+    \ set softtabstop=2 |
+    \ set textwidth=80
+endif
+
+" editor
 set backspace=indent,eol,start
 set nobackup
-set expandtab
 set laststatus=2
-set fileformat=unix
-set fileformats=unix,dos,mac
-set hidden
 set history=1000
-set undolevels=1000
 set autoread
 set autowrite
 if v:version >= 704
@@ -91,6 +112,20 @@ set updatetime=200
 set noerrorbells visualbell t_vb=
 set wildmenu
 set lazyredraw
+syntax on
+
+" undo
+set hidden
+set undolevels=1000
+if has('persistent_undo')
+  call system('mkdir -p $HOME/.vim/undo')
+  set undodir=~/.vim/undo//
+  set undofile
+  set undoreload=10000
+endif
+
+" spell
+set spellfile=$HOME/dotfiles/vim/spell/en.latin1.add
 
 " quickfix
 map <C-n> :cnext<CR>
@@ -101,40 +136,24 @@ map <leader>a :cclose<CR>
 " tags
 set tags+=./tags;/
 
-" filetype-specific
+" specific filetypes
 let g:is_posix = 1
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
-
 autocmd vimrc BufEnter *.conf setf conf
-augroup vimrc
-  " Automatically delete trailing DOS-returns and whitespace on file open and
-  " write.
-  autocmd BufRead,BufWritePre,FileWritePre * silent! %s/[\r \t]\+$//
-augroup END
-
+autocmd vimrc BufRead,BufWritePre,FileWritePre * silent! %s/[\r \t]\+$//
+autocmd vimrc BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd vimrc FileType text,markdown,gitcommit set nocindent
-autocmd vimrc FileType make set noexpandtab shiftwidth=8 softtabstop=0
+autocmd vimrc FileType markdown setlocal spell! spelllang=en_us
 
-" turn syntax highlighting on
-syntax on
-
-" fold
+" folding
 set foldenable
 set foldlevelstart=10
 set foldnestmax=10
 set foldmethod=indent
 
-" With this map, we can select some text in visual mode and by invoking the map,
-" have the selection automatically filled in as the search text and the cursor
-" placed in the position for typing the replacement text. Also, this will ask
-" for confirmation before it replaces any instance of the search text in the
-" file.
-" NOTE: We're using %S here instead of %s; the capital S version comes from the
-" eregex.vim plugin and uses Perl-style regular expressions.
-vnoremap <C-r> "hy:%S/<C-r>h//c<left><left>
-" Fast saving
-nnoremap <leader>w :w!<cr>
+" keymaps
+nnoremap <leader>w :w!<cr> " fast saving
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -148,6 +167,9 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_symbols_ascii = 1
 
 " indent
+let g:indentLine_char = '┊'
+let g:indentLine_fileType = ['c', 'cpp']
+let g:indentLine_showFirstIndentLevel = 1
 
 " cscope - noplugins
 if has('cscope')
@@ -200,10 +222,16 @@ nnoremap <F9> :TagbarToggle<CR>
 " YouCompleteMe
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_min_num_identifier_candidate_chars = 4
-nnoremap <leader>yf :YcmForceCompileAndDiagnostics<cr>
+nnoremap <leader>yj :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>yg :YcmCompleter GoTo<CR>
-nnoremap <leader>yd :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>yc :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>yi :YcmCompleter GoToImplementationElseDeclaration<CR>
+nnoremap <leader>yt :YcmCompleter GetTypeImprecise<CR>
+nnoremap <leader>yd :YcmCompleter GetDoc<CR>
+nnoremap <leader>yf :YcmCompleter FixIt<CR>
+nnoremap <leader>yr :YcmCompleter GoToReferences<CR>
+nnoremap <leader>ys :YcmDiags<CR>
+nnoremap <leader>yD ::YcmForceCompileAndDiagnostics<CR>
+nnoremap <leader>yR :YcmRestartServer<CR>
 
 " vim-clang-format
 let g:clang_format#code_style = 'google'
@@ -306,7 +334,3 @@ augroup END
 
 " markdown
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
-augroup vimrc
-  autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-augroup END
-
