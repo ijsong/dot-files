@@ -125,7 +125,9 @@ if has('persistent_undo')
 endif
 
 " spell
-set spellfile=$HOME/dotfiles/vim/spell/en.latin1.add
+set spelllang=en
+" set spellfile=$HOME/dotfiles/vim/spell/en.latin1.add
+
 
 " quickfix
 map <C-n> :cnext<CR>
@@ -144,7 +146,8 @@ autocmd vimrc BufEnter *.conf setf conf
 autocmd vimrc BufRead,BufWritePre,FileWritePre * silent! %s/[\r \t]\+$//
 autocmd vimrc BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd vimrc FileType text,markdown,gitcommit set nocindent
-autocmd vimrc FileType markdown setlocal spell! spelllang=en_us
+autocmd vimrc FileType markdown setlocal spell! spelllang=en
+autocmd vimrc FileType gitcommit setlocal spell
 
 " folding
 set foldenable

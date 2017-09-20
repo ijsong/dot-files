@@ -44,7 +44,7 @@ export PATH=$PATH
 alias brewall='brew update; brew cleanup; brew cask cleanup; brew upgrade; brew doctor; brew cask doctor'
 
 # bash_profile.d
-for script in $HOME/bash_profile.d/*; do
+for script in $HOME/dotfiles/bash_profile.d/*; do
   if [ -r $script ]; then
     source $script
   fi
