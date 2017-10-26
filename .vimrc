@@ -63,7 +63,6 @@ set matchtime=2
 set scrolloff=2
 set cmdheight=2
 set wrap
-set textwidth=80
 set colorcolumn=+1
 
 " search
@@ -81,21 +80,16 @@ set copyindent
 set cindent
 set expandtab
 set smarttab
+set textwidth=80
 autocmd vimrc FileType make set noexpandtab shiftwidth=8 softtabstop=0
 if at_sap
-  autocmd vimrc FileType c,cpp
-    \ set noexpandtab |
-    \ set tabstop=4 |
-    \ set shiftwidth=4 |
-    \ set softtabstop=4 |
-    \ set textwidth=80
+  autocmd vimrc FileType c,cpp set tabstop=4
+  autocmd vimrc FileType c,cpp set shiftwidth=4
+  autocmd vimrc FileType c,cpp set softtabstop=4
 else
-  autocmd vimrc FileType c,cpp
-    \ set noexpandtab |
-    \ set tabstop=2 |
-    \ set shiftwidth=2 |
-    \ set softtabstop=2 |
-    \ set textwidth=80
+  autocmd vimrc FileType c,cpp set tabstop=2
+  autocmd vimrc FileType c,cpp set shiftwidth=2
+  autocmd vimrc FileType c,cpp set softtabstop=2
 endif
 
 " editor
