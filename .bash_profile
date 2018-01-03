@@ -8,8 +8,8 @@ PATH=$GOPATH/bin:$PATH
 # java
 export JAVA_HOME=$(/usr/libexec/java_home)
 
-# perlbrew
-source ~/perl5/perlbrew/etc/bashrc
+# plenv
+if which plenv > /dev/null; then eval "$(plenv init -)"; fi
 
 # pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
@@ -19,22 +19,17 @@ eval "$(rbenv init -)"
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-
-# arcanist
-PATH=$HOME/workspaces/arcanist/bin:$PATH
+. "/usr/local/opt/nvm/nvm.sh"
 
 # bash-git-prompt
 # alternative: https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh
-if [ -f /usr/local/share/gitprompt.sh ]; then
+if [ -f "/usr/local/opt/bash-git-prompt/share/gitprompt.sh" ]; then
   GIT_PROMPT_ONLY_IN_REPO=1
   GIT_PROMPT_SHOW_UNTRACKED_FILES=normal
   GIT_PROMPT_THEME=Default
-  . /usr/local/share/gitprompt.sh
+  __GIT_PROMPT_DIR="/usr/local/opt/bash-git-prompt/share"
+  source "/usr/local/opt/bash-git-prompt/share/gitprompt.sh"
 fi
-
-# coreutils
-PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 # path
 PATH=/usr/local/sbin:$PATH
@@ -49,4 +44,3 @@ for script in $HOME/dotfiles/bash_profile.d/*; do
     source $script
   fi
 done
-
