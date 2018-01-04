@@ -1,1 +1,1 @@
-alias ls='ls -FG --color'
+alias ls='ls -FG'
