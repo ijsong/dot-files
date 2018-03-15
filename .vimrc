@@ -22,7 +22,6 @@ Plugin 'scrooloose/syntastic'
 Plugin 'fatih/vim-go'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'tpope/vim-markdown'
-Plugin 'suan/vim-instant-markdown'
 Plugin 'jez/vim-better-sml'
 
 " all of your plugins must be added before the following line
