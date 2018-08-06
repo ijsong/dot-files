@@ -16,13 +16,9 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-fugitive'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'rhysd/vim-clang-format'
-Plugin 'scrooloose/syntastic'
-Plugin 'fatih/vim-go'
-Plugin 'derekwyatt/vim-scala'
-Plugin 'tpope/vim-markdown'
-Plugin 'jez/vim-better-sml'
+Plugin 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plugin 'Valloric/YouCompleteMe'
 
 " all of your plugins must be added before the following line
 call vundle#end()
@@ -102,7 +98,7 @@ set autowrite
 if v:version >= 704
   set regexpengine=1
 endif
-set updatetime=200
+set updatetime=100
 set noerrorbells visualbell t_vb=
 set wildmenu
 set lazyredraw
@@ -163,7 +159,7 @@ colorscheme chroma
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_symbols_ascii = 1
 
-" indent
+" indentline
 let g:indentLine_char = '┊'
 let g:indentLine_fileType = ['c', 'cpp']
 let g:indentLine_showFirstIndentLevel = 1
@@ -216,20 +212,6 @@ nnoremap <F9> :TagbarToggle<CR>
 
 " fugitive
 
-" YouCompleteMe
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_min_num_identifier_candidate_chars = 4
-nnoremap <leader>yj :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <leader>yg :YcmCompleter GoTo<CR>
-nnoremap <leader>yi :YcmCompleter GoToImplementationElseDeclaration<CR>
-nnoremap <leader>yt :YcmCompleter GetTypeImprecise<CR>
-nnoremap <leader>yd :YcmCompleter GetDoc<CR>
-nnoremap <leader>yf :YcmCompleter FixIt<CR>
-nnoremap <leader>yr :YcmCompleter GoToReferences<CR>
-nnoremap <leader>ys :YcmDiags<CR>
-nnoremap <leader>yD ::YcmForceCompileAndDiagnostics<CR>
-nnoremap <leader>yR :YcmRestartServer<CR>
-
 " vim-clang-format
 let g:clang_format#code_style = 'google'
 let g:clang_format#detect_style_file = 1
@@ -242,37 +224,6 @@ augroup vimrc
   autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
   autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 augroup END
-
-" syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_warning_symbol = '⚠'
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 2
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_quiet_messages = { "type": "style" }
-" syntastic - c++
-let g:syntastic_cpp_no_include_search = 1
-let g:syntastic_cpp_no_default_include_dirs = 1
-let g:syntastic_cpp_auto_refresh_includes = 1
-let g:syntastic_cpp_remove_include_errors = 1
-let g:syntastic_loc_list_height = 5
-let g:syntastic_cpp_include_dirs = [ '.', 'include', 'includes', 'inc', 'headers' ]
-let g:syntastic_cpp_compiler_options = '-std=c++11 -Wall -Wextra -Wpedantic -Weffc++'
-" syntastic - go
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-let g:syntastic_mode_map = {
-  \ 'mode': 'active',
-  \ 'passive_filetypes': ['go'] }
-" syntastic - python
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = '--max-line-length=80 ' .
-  \ '--max-complexity=10 --ignore=E111,E114,E121,E125,E126,E127,E128,E129,' .
-  \ 'E131,E133,E201,E202,E203,E211,E221,E222,E241,E251,E261,E303,E402,W503'
 
 " vim-go
 let g:go_highlight_types = 1
@@ -306,7 +257,7 @@ function! s:build_go_files()
   endif
 endfunction
 augroup vimrc
-  autocmd BufNewFile,BufRead *.go setlocal tabstop=4 shiftwidth=4
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
   autocmd FileType go set number fo+=croq tw=100
   autocmd FileType go set makeprg=go\ build\ .
   autocmd FileType go nmap <leader>r <Plug>(go-run)
@@ -329,5 +280,16 @@ augroup vimrc
   autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 augroup END
 
-" markdown
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+" youcompleteme
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_min_num_identifier_candidate_chars = 4
+nnoremap <leader>yj :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>yg :YcmCompleter GoTo<CR>
+nnoremap <leader>yi :YcmCompleter GoToImplementationElseDeclaration<CR>
+nnoremap <leader>yt :YcmCompleter GetTypeImprecise<CR>
+nnoremap <leader>yd :YcmCompleter GetDoc<CR>
+nnoremap <leader>yf :YcmCompleter FixIt<CR>
+nnoremap <leader>yr :YcmCompleter GoToReferences<CR>
+nnoremap <leader>ys :YcmDiags<CR>
+nnoremap <leader>yD ::YcmForceCompileAndDiagnostics<CR>
+nnoremap <leader>yR :YcmRestartServer<CR>
