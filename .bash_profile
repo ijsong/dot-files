@@ -9,7 +9,8 @@ PATH=$GOPATH/bin:$PATH
 export JAVA_HOME=$(/usr/libexec/java_home)
 
 # plenv
-if which plenv > /dev/null; then eval "$(plenv init -)"; fi
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 # pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
@@ -20,6 +21,9 @@ eval "$(rbenv init -)"
 # nvm
 export NVM_DIR="$HOME/.nvm"
 . "/usr/local/opt/nvm/nvm.sh"
+
+# flutter
+PATH=$HOME/workspaces/flutter/bin:$PATH
 
 # bash-git-prompt
 # alternative: https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh
