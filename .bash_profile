@@ -25,6 +25,9 @@ export NVM_DIR="$HOME/.nvm"
 # flutter
 PATH=$HOME/workspaces/flutter/bin:$PATH
 
+# scalikejdbc
+PATH=${PATH}:${HOME}/bin/scalikejdbc-cli
+
 # bash-git-prompt
 # alternative: https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh
 if [ -f "/usr/local/opt/bash-git-prompt/share/gitprompt.sh" ]; then
@@ -49,7 +52,5 @@ for script in $HOME/dotfiles/bash_profile.d/*; do
   fi
 done
 
+# vi mode
 set -o vi
-
-# scalikejdbc
-PATH=${PATH}:${HOME}/bin/scalikejdbc-cli
