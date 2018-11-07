@@ -40,7 +40,7 @@ PATH=/usr/local/sbin:$PATH
 export PATH=$PATH
 
 # brew
-alias brewall='brew update; brew cleanup; brew cask cleanup; brew upgrade; brew doctor; brew cask doctor'
+alias brewall='brew update; brew cleanup; brew upgrade; brew doctor; brew cask doctor'
 
 # bash_profile.d
 for script in $HOME/dotfiles/bash_profile.d/*; do
@@ -48,3 +48,8 @@ for script in $HOME/dotfiles/bash_profile.d/*; do
     source $script
   fi
 done
+
+set -o vi
+
+# scalikejdbc
+PATH=${PATH}:${HOME}/bin/scalikejdbc-cli
