@@ -19,6 +19,9 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 
 " all of your plugins must be added before the following line
 call vundle#end()
@@ -103,6 +106,10 @@ set noerrorbells visualbell t_vb=
 set wildmenu
 set lazyredraw
 syntax on
+
+" split
+set splitbelow
+set splitright
 
 " undo
 set hidden
@@ -293,3 +300,11 @@ nnoremap <leader>yr :YcmCompleter GoToReferences<CR>
 nnoremap <leader>ys :YcmDiags<CR>
 nnoremap <leader>yD ::YcmForceCompileAndDiagnostics<CR>
 nnoremap <leader>yR :YcmRestartServer<CR>
+
+" tmux navigator
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <c-j>  :TmuxNavigateDown<cr>
+nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
