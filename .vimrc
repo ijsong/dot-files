@@ -22,6 +22,7 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'asciidoc/vim-asciidoc'
 
 " all of your plugins must be added before the following line
 call vundle#end()
@@ -142,6 +143,7 @@ set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 autocmd vimrc BufEnter *.conf setf conf
 autocmd vimrc BufRead,BufWritePre,FileWritePre * silent! %s/[\r \t]\+$//
 autocmd vimrc BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd vimrc BufNewFile,BufReadPost *.asciidoc,*.adoc set filetype=asciidoc
 autocmd vimrc FileType text,markdown,gitcommit set nocindent
 autocmd vimrc FileType markdown setlocal spell! spelllang=en
 autocmd vimrc FileType gitcommit setlocal spell
@@ -251,9 +253,13 @@ let g:go_auto_type_info = 1
 let g:go_metalinter_autosave = 0
 let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
-" let g:go_def_mode = 'godef'
+let g:go_def_mode = 'guru'
 let g:go_auto_sameids = 1
 let g:go_list_type = 'quickfix'
+let g:go_gocode_propose_builtins = 1
+let g:go_gocode_propose_source = 1
+let g:go_gocode_unimported_packages = 1
+
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
   let l:file = expand('%')
