@@ -43,7 +43,7 @@ PATH=/usr/local/sbin:$PATH
 export PATH=$PATH
 
 # brew
-alias brewall='brew update; brew cleanup; brew upgrade; brew doctor; brew cask doctor'
+alias brewall='brew update; brew cleanup; brew upgrade; brew cask upgrade; brew doctor; brew cask doctor'
 
 # bash_profile.d
 for script in $HOME/dotfiles/bash_profile.d/*; do
