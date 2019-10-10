@@ -2,7 +2,7 @@
 export EDITOR=/usr/local/bin/vi
 
 # go
-export GOPATH=$HOME/workspaces
+export GOPATH=$HOME/workspace
 PATH=$GOPATH/bin:$PATH
 
 # java
@@ -21,12 +21,6 @@ eval "$(rbenv init -)"
 # nvm
 export NVM_DIR="$HOME/.nvm"
 . "/usr/local/opt/nvm/nvm.sh"
-
-# flutter
-PATH=$HOME/workspaces/flutter/bin:$PATH
-
-# scalikejdbc
-PATH=${PATH}:${HOME}/bin/scalikejdbc-cli
 
 # bash-git-prompt
 # alternative: https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh
