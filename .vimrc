@@ -18,6 +18,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 augroup vimrc
@@ -229,6 +230,7 @@ endif
 
 " vim-airline/vim-airline
 if has_key(g:plugs, 'vim-airline')
+  let g:airline_powerline_fonts = 1
   let g:airline#extensions#tabline#enabled = 1
   let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
   if has_key(g:plugs, 'vim-airline-themes')
@@ -274,4 +276,10 @@ if has_key(g:plugs, 'nerdtree')
       \| endif
   augroup END
   nnoremap <leader>n :NERDTreeToggle<cr>
+endif
+
+
+" ryanoasis/vim-devicons
+if has_key(g:plugs, 'vim-devicons')
+  let g:WebDevIconsOS = 'Darwin'
 endif
