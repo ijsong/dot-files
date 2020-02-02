@@ -9,6 +9,11 @@
         "highlight": { "lsRanges" : true }
       }
     },
+    "metals": {
+      "command": "metals-vim",
+      "rootPatterns": ["build.sbt"],
+      "filetypes": ["scala", "sbt"]
+    },
     "golang": {
       "command": "gopls",
       "filetypes": ["go"],
