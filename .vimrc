@@ -127,18 +127,26 @@ set foldmethod=indent
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " coc.nvim
 if has_key(g:plugs, 'coc.nvim')
-  inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
+  " Use <tab> for trigger completion and navigate to the next complete item
   function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~# '\s'
   endfunction
+  inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
 
-  nnoremap <silent> K :call <SID>show_documentation()<CR>
+  " Use <Tab> and <S-Tab> to navigate the completion list
+  inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+  " Use <cr> to confirm completion
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  " To make <cr> select the first completion item and confirm the completion
+  " when no item has been selected
+  inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+
   function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
       execute 'h '.expand('<cword>')
@@ -146,6 +154,7 @@ if has_key(g:plugs, 'coc.nvim')
       call CocAction('doHover')
     endif
   endfunction
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
 
   let g:coc_global_extensions = [
     \ 'coc-ccls', 'coc-metals', 'coc-python', 'coc-java', 
@@ -154,6 +163,8 @@ if has_key(g:plugs, 'coc.nvim')
 
   augroup coc-config
     autocmd!
+    " Close the preview window when completion is done
+    autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
     autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
     autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
     " autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
@@ -288,9 +299,16 @@ endif
 
 " fatih/vim-go
 if has_key(g:plugs, 'vim-go')
+  " disable code completion - use LSP
+  let g:go_code_completion_enabled = 0
+
+  " highlight
+  let g:go_auto_sameids = 1
   let g:go_highlight_types = 1
   let g:go_highlight_fields = 1
+  let g:go_highlight_format_strings = 1
   let g:go_highlight_functions = 1
+  let g:go_highlight_function_calls = 1
   let g:go_highlight_methods = 1
   let g:go_highlight_structs = 1
   let g:go_highlight_interfaces = 1
@@ -298,18 +316,31 @@ if has_key(g:plugs, 'vim-go')
   let g:go_highlight_build_constraints = 1
   let g:go_highlight_extra_types = 1
   let g:go_highlight_generate_tags = 1
-  let g:go_fmt_command = 'goimports'
-  let g:go_fmt_fail_silently = 1
+  let g:go_highlight_variable_assignments = 1
+  " highlight on error
+  let g:go_highlight_array_whitespace_error = 1
+  let g:go_highlight_chan_whitespace_error = 1
+  let g:go_highlight_space_tab_error = 1
+  let g:go_highlight_trailing_whitespace_error = 1
+  let g:go_highlight_string_spellcheck = 1
+  let g:go_highlight_diagnostic_errors = 1
+  let g:go_highlight_diagnostic_warnings = 1
+  " fmt
   let g:go_fmt_autosave = 1
-  let g:go_play_open_browser = 0
+  let g:go_fmt_fail_silently = 1
+  let g:go_fmt_command = 'goimports'
+  " type info
   let g:go_auto_type_info = 1
-  let g:go_metalinter_autosave = 0
-  let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+  " use updatetime
+  let g:go_updatetime = 0
+  " metalinter
   let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+  let g:go_metalinter_autosave = 1
+  let g:go_metalinter_autosave_enabled = ['vet', 'golint']
   let g:go_metalinter_deadline = '5s'
+  " extra
   let g:go_def_mode = 'gopls'
   let g:go_info_mode = 'gopls'
-  let g:go_auto_sameids = 1
   let g:go_list_type = 'quickfix'
   let g:go_gocode_propose_builtins = 1
   let g:go_gocode_propose_source = 1
@@ -330,9 +361,9 @@ if has_key(g:plugs, 'vim-go')
     autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
     autocmd FileType go set number fo+=croq tw=100
     autocmd FileType go set makeprg=go\ build\ .
-    autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
-    autocmd FileType go nmap <leader>r <Plug>(go-run)
-    autocmd FileType go nmap <leader>t <Plug>(go-test)
+    autocmd FileType go nmap <Leader>b :<C-u>call <SID>build_go_files()<CR>
+    autocmd FileType go nmap <Leader>r <Plug>(go-run)
+    autocmd FileType go nmap <Leader>t <Plug>(go-test)
     autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
     autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
     autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
