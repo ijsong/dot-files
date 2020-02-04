@@ -19,6 +19,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
 augroup vimrc
@@ -155,7 +156,7 @@ if has_key(g:plugs, 'coc.nvim')
     autocmd!
     autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
     autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-    autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+    " autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 augroup end
 endif
 
@@ -282,4 +283,71 @@ endif
 " ryanoasis/vim-devicons
 if has_key(g:plugs, 'vim-devicons')
   let g:WebDevIconsOS = 'Darwin'
+endif
+
+
+" fatih/vim-go
+if has_key(g:plugs, 'vim-go')
+  let g:go_highlight_types = 1
+  let g:go_highlight_fields = 1
+  let g:go_highlight_functions = 1
+  let g:go_highlight_methods = 1
+  let g:go_highlight_structs = 1
+  let g:go_highlight_interfaces = 1
+  let g:go_highlight_operators = 1
+  let g:go_highlight_build_constraints = 1
+  let g:go_highlight_extra_types = 1
+  let g:go_highlight_generate_tags = 1
+  let g:go_fmt_command = 'goimports'
+  let g:go_fmt_fail_silently = 1
+  let g:go_fmt_autosave = 1
+  let g:go_play_open_browser = 0
+  let g:go_auto_type_info = 1
+  let g:go_metalinter_autosave = 0
+  let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+  let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+  let g:go_metalinter_deadline = '5s'
+  let g:go_def_mode = 'gopls'
+  let g:go_info_mode = 'gopls'
+  let g:go_auto_sameids = 1
+  let g:go_list_type = 'quickfix'
+  let g:go_gocode_propose_builtins = 1
+  let g:go_gocode_propose_source = 1
+  let g:go_gocode_unimported_packages = 1
+  let g:go_code_completion_enabled = 1
+  let g:go_test_timeout = '10s'
+
+  function! s:build_go_files()
+    let l:file = expand('%')
+    if l:file =~# '^\f\+_test\.go$'
+      call go#cmd#Test(0, 1)
+    elseif l:file =~# '^\f\+\.go$'
+      call go#cmd#Build(0)
+    endif
+  endfunction
+
+  augroup vim-go-config
+    autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
+    autocmd FileType go set number fo+=croq tw=100
+    autocmd FileType go set makeprg=go\ build\ .
+    autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+    autocmd FileType go nmap <leader>r <Plug>(go-run)
+    autocmd FileType go nmap <leader>t <Plug>(go-test)
+    autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+    autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
+    autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+    autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
+    autocmd FileType go nmap <Leader>gd <Plug>(go-doc)
+    autocmd FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+    autocmd FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+    autocmd FileType go nmap <Leader>s <Plug>(go-implements)
+    autocmd FileType go nmap <Leader>i <Plug>(go-info)
+    autocmd FileType go nmap <Leader>e <Plug>(go-rename)
+    autocmd FileType go nmap <Leader>fc <Plug>(go-referrers)
+    autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+    autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+    autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+    autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+  augroup END
+
 endif
