@@ -4,6 +4,9 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+" curl -fSL https://www.languagetool.org/download/LanguageTool-4.8.zip | \
+" tar -xvf - -C ~/.vim && mv ~/.vim/LanguageTool-4.8 ~/.vim/languagetool
+
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'
 Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': { -> coc#util#install() }}
@@ -20,6 +23,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
+Plug 'dpelle/vim-LanguageTool'
 call plug#end()
 
 augroup vimrc
@@ -77,8 +82,6 @@ augroup vimrc
   autocmd FileType c,cpp set softtabstop=2
 augroup END
 
-
-
 " editor
 set hidden
 set signcolumn=yes
@@ -98,6 +101,11 @@ set wildmenu
 set lazyredraw
 syntax on
 filetype plugin indent on
+
+" quickfix list
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
 
 " split
 set splitbelow
@@ -303,7 +311,7 @@ if has_key(g:plugs, 'vim-go')
   let g:go_code_completion_enabled = 0
 
   " highlight
-  let g:go_auto_sameids = 1
+  let g:go_auto_sameids = 0
   let g:go_highlight_types = 1
   let g:go_highlight_fields = 1
   let g:go_highlight_format_strings = 1
@@ -317,6 +325,7 @@ if has_key(g:plugs, 'vim-go')
   let g:go_highlight_extra_types = 1
   let g:go_highlight_generate_tags = 1
   let g:go_highlight_variable_assignments = 1
+
   " highlight on error
   let g:go_highlight_array_whitespace_error = 1
   let g:go_highlight_chan_whitespace_error = 1
@@ -325,27 +334,34 @@ if has_key(g:plugs, 'vim-go')
   let g:go_highlight_string_spellcheck = 1
   let g:go_highlight_diagnostic_errors = 1
   let g:go_highlight_diagnostic_warnings = 1
+
   " fmt
   let g:go_fmt_autosave = 1
   let g:go_fmt_fail_silently = 1
   let g:go_fmt_command = 'goimports'
+
   " type info
   let g:go_auto_type_info = 1
+
   " use updatetime
   let g:go_updatetime = 0
+
   " metalinter
   let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
   let g:go_metalinter_autosave = 1
   let g:go_metalinter_autosave_enabled = ['vet', 'golint']
   let g:go_metalinter_deadline = '5s'
+  " let g:go_metalinter_command = "gopls"
+
   " extra
+  let g:go_jump_to_error = 0
   let g:go_def_mode = 'gopls'
   let g:go_info_mode = 'gopls'
   let g:go_list_type = 'quickfix'
+  let g:go_list_height = 5
   let g:go_gocode_propose_builtins = 1
   let g:go_gocode_propose_source = 1
   let g:go_gocode_unimported_packages = 1
-  let g:go_code_completion_enabled = 1
   let g:go_test_timeout = '10s'
 
   function! s:build_go_files()
@@ -381,4 +397,14 @@ if has_key(g:plugs, 'vim-go')
     autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
   augroup END
 
+endif
+
+" iamcco/markdown-preview.nvim
+if has_key(g:plugs, 'markdown-preview.nvim')
+endif
+
+" dpelle/vim-LanguageTool 
+if has_key(g:plugs, 'vim-LanguageTool')
+  let g:languagetool_jar='$HOME/.vim/languagetool/languagetool-commandline.jar'
+  let g:languagetool_lang='en-US'
 endif
