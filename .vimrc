@@ -1,9 +1,3 @@
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
 " curl -fSL https://www.languagetool.org/download/LanguageTool-4.8.zip | \
 " tar -xvf - -C ~/.vim && mv ~/.vim/LanguageTool-4.8 ~/.vim/languagetool
 
