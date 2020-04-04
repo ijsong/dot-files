@@ -1,7 +1,11 @@
 " curl -fSL https://www.languagetool.org/download/LanguageTool-4.8.zip | \
 " tar -xvf - -C ~/.vim && mv ~/.vim/LanguageTool-4.8 ~/.vim/languagetool
 
-call plug#begin('~/.vim/plugged')
+if has('nvim')
+  call plug#begin(stdpath('data') . '/plugged')
+else
+  call plug#begin('~/.vim/plugged')
+endif
 Plug 'tpope/vim-fugitive'
 Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': { -> coc#util#install() }}
 Plug 'derekwyatt/vim-scala'
@@ -37,7 +41,7 @@ set fileformat=unix
 set fileformats=unix,dos,mac
 
 " display
-" set background=dark
+set background=dark
 set number
 set ruler
 set title
