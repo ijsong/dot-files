@@ -3,7 +3,14 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # editor
+alias vim="nvim"
+alias vi="nvim"
 export EDITOR='vim'
+
+# llvm
+PATH="/usr/local/opt/llvm/bin:$PATH"
+LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
+CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 # go
 export GOPATH=$HOME/workspace
