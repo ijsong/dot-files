@@ -163,7 +163,7 @@ if has_key(g:plugs, 'coc.nvim')
   nnoremap <silent> K :call <SID>show_documentation()<CR>
 
   let g:coc_global_extensions = [
-    \ 'coc-ccls', 'coc-metals', 'coc-python', 'coc-java', 
+    \ 'coc-clangd', 'coc-metals', 'coc-python', 'coc-java', 
     \ 'coc-json', 'coc-yaml', 'coc-emoji',
     \ 'coc-git']
 
