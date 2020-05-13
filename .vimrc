@@ -22,6 +22,7 @@ Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
+Plug 'mzlogin/vim-markdown-toc'
 Plug 'dpelle/vim-LanguageTool'
 call plug#end()
 
@@ -75,9 +76,8 @@ set smarttab
 set textwidth=80
 augroup vimrc
   autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0
-  autocmd FileType c,cpp set tabstop=2
-  autocmd FileType c,cpp set shiftwidth=2
-  autocmd FileType c,cpp set softtabstop=2
+  autocmd FileType c,cpp set tabstop=2 shiftwidth=2 softtabstop=2
+  autocmd FileType markdown set tabstop=4 shiftwidth=4 softtabstop=4
 augroup END
 
 " editor
@@ -399,6 +399,11 @@ endif
 
 " iamcco/markdown-preview.nvim
 if has_key(g:plugs, 'markdown-preview.nvim')
+endif
+
+" mzlogin/vim-markdown-toc
+if has_key(g:plugs, "vim-markdown-toc")
+  let g:vmt_auto_update_on_save=1
 endif
 
 " dpelle/vim-LanguageTool 
