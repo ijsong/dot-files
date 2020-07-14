@@ -67,17 +67,20 @@ set magic
 
 " indent, tab and space
 " http://vimdoc.sourceforge.net/htmldoc/indent.html#cinoptions-values
-set cino=b1,g0,N-s,t0,(0,W4
+" set cino=b1,g0,N-s,t0,(0,W4
 set autoindent
 set copyindent
+set smartindent
 set cindent
 set expandtab
 set smarttab
 set textwidth=80
+set tabstop=4 shiftwidth=4 softtabstop=4
 augroup vimrc
-  autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0
+  autocmd FileType markdown set shiftwidth=0 cino=(s
+  autocmd FileType make set noexpandtab tabstop=8 shiftwidth=8 softtabstop=0
   autocmd FileType c,cpp set tabstop=2 shiftwidth=2 softtabstop=2
-  autocmd FileType markdown set tabstop=4 shiftwidth=4 softtabstop=4
+  autocmd BufNewFile,BufRead CMakeLists.txt set filetype=cmake
 augroup END
 
 " editor
@@ -163,9 +166,9 @@ if has_key(g:plugs, 'coc.nvim')
   nnoremap <silent> K :call <SID>show_documentation()<CR>
 
   let g:coc_global_extensions = [
-    \ 'coc-clangd', 'coc-metals', 'coc-python', 'coc-java', 
+    \ 'coc-metals', 'coc-python', 'coc-java', 
     \ 'coc-json', 'coc-yaml', 'coc-emoji',
-    \ 'coc-git']
+    \ 'coc-clangd', 'coc-git']
 
   augroup coc-config
     autocmd!
@@ -251,6 +254,7 @@ if has_key(g:plugs, 'vim-airline')
   let g:airline_powerline_fonts = 1
   let g:airline#extensions#tabline#enabled = 1
   let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+  let g:airline#extensions#tabline#show_tab_nr = 1
   if has_key(g:plugs, 'vim-airline-themes')
     let g:airline_theme='minimalist'
   endif
@@ -336,7 +340,11 @@ if has_key(g:plugs, 'vim-go')
   " fmt
   let g:go_fmt_autosave = 1
   let g:go_fmt_fail_silently = 1
-  let g:go_fmt_command = 'goimports'
+  let g:go_fmt_command = 'gofmt'
+
+  " import
+  let g:go_imports_mode = "gopls"
+  let g:go_imports_autosave =  1
 
   " type info
   let g:go_auto_type_info = 1
@@ -346,10 +354,11 @@ if has_key(g:plugs, 'vim-go')
 
   " metalinter
   let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
-  let g:go_metalinter_autosave = 1
+  let g:go_metalinter_autosave = 0
   let g:go_metalinter_autosave_enabled = ['vet', 'golint']
   let g:go_metalinter_deadline = '5s'
-  " let g:go_metalinter_command = "gopls"
+  let g:go_metalinter_command = "gopls"
+  let g:go_gopls_staticcheck = 1
 
   " extra
   let g:go_jump_to_error = 0
@@ -357,10 +366,14 @@ if has_key(g:plugs, 'vim-go')
   let g:go_info_mode = 'gopls'
   let g:go_list_type = 'quickfix'
   let g:go_list_height = 5
+  let g:go_list_autoclose = 1
   let g:go_gocode_propose_builtins = 1
   let g:go_gocode_propose_source = 1
   let g:go_gocode_unimported_packages = 1
   let g:go_test_timeout = '10s'
+
+  " rename
+  let g:go_rename_command = 'gopls'
 
   function! s:build_go_files()
     let l:file = expand('%')
