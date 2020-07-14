@@ -1,17 +1,9 @@
 {
+  "clangd.semanticHighlighting": true,
   "languageserver": {
-    "clangd": {
-      "command": "clangd",
-      "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
-      "filetypes": ["c", "cpp", "objc", "objcpp"]
-    },
-    "metals": {
-      "command": "metals-vim",
-      "rootPatterns": ["build.sbt"],
-      "filetypes": ["scala", "sbt"]
-    },
     "golang": {
       "command": "gopls",
+      "args": ["serve", "-debug", "0.0.0.0:8484", "-rpc.trace"],
       "filetypes": ["go"],
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "initializationOptions": {
