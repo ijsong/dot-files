@@ -6,6 +6,7 @@
       "args": ["serve", "-debug", "0.0.0.0:8484", "-rpc.trace"],
       "filetypes": ["go"],
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "trace.server": "verbose",
       "initializationOptions": {
         "usePlaceholders": true,
         "completeUnimported": true
