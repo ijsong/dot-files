@@ -81,6 +81,7 @@ augroup vimrc
   autocmd FileType make set noexpandtab tabstop=8 shiftwidth=8 softtabstop=0
   autocmd FileType c,cpp set tabstop=2 shiftwidth=2 softtabstop=2
   autocmd BufNewFile,BufRead CMakeLists.txt set filetype=cmake
+  autocmd BufNewFile,BufRead *.proto set filetype=proto
 augroup END
 
 " editor
@@ -199,8 +200,8 @@ if has_key(g:plugs, 'vim-clang-format')
   augroup vim-clang-format-config
     autocmd!
     " autocmd FileType c,cpp ClangFormatAutoEnable
-    autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-    autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+    autocmd FileType c,cpp,objc,proto nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+    autocmd FileType c,cpp,objc,proto vnoremap <buffer><Leader>cf :ClangFormat<CR>
   augroup END
 endif
 
@@ -363,7 +364,7 @@ if has_key(g:plugs, 'vim-go')
               \ 'gomnd', 'godot', 'exhaustive']
   let g:go_metalinter_autosave = 1
   let g:go_metalinter_autosave_enabled = ['vet']
-  let g:go_metalinter_deadline = '20s'
+  let g:go_metalinter_deadline = '30s'
   " let g:go_gopls_staticcheck = 1
 
   " extra
