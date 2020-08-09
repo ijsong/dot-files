@@ -78,7 +78,7 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-source $HOME/.zshrc.myconf
+source $HOME/.profile.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -103,3 +103,5 @@ source $HOME/.zshrc.myconf
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
