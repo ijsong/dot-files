@@ -364,7 +364,7 @@ if has_key(g:plugs, 'vim-go')
               \ 'gomnd', 'godot', 'exhaustive']
   let g:go_metalinter_autosave = 1
   let g:go_metalinter_autosave_enabled = ['vet']
-  let g:go_metalinter_deadline = '30s'
+  let g:go_metalinter_deadline = '180s'
   " let g:go_gopls_staticcheck = 1
 
   " extra
