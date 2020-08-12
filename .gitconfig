@@ -9,6 +9,6 @@
 [pager]
     branch = false
 [alias]
-    co = fetch && checkout
+    co = checkout
     br = branch
     st = status
