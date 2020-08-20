@@ -24,6 +24,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
 Plug 'mzlogin/vim-markdown-toc'
 Plug 'dpelle/vim-LanguageTool'
+Plug 'n0v1c3/vira', { 'do': './install.sh' }
 call plug#end()
 
 augroup vimrc
@@ -54,7 +55,7 @@ set matchtime=2
 set scrolloff=2
 set cmdheight=2
 set wrap
-set colorcolumn=+1
+set colorcolumn=80
 set nostartofline
 set shortmess=aT
 
@@ -76,6 +77,7 @@ set expandtab
 set smarttab
 set textwidth=80
 set tabstop=4 shiftwidth=4 softtabstop=4
+set fo+=tcroq
 augroup vimrc
   autocmd FileType markdown set shiftwidth=0 cino=(s
   autocmd FileType make set noexpandtab tabstop=8 shiftwidth=8 softtabstop=0
@@ -265,6 +267,9 @@ if has_key(g:plugs, 'vim-airline')
   if !exists('g:airline_symbols')
     let g:airline_symbols = {}
   endif
+  if has_key(g:plugs, 'n0v1c3/vira')
+    let g:airline_section_z = '%{ViraStatusLine()}'
+  endif
   " unicode symbols
   let g:airline_left_sep = '»'
   let g:airline_left_sep = '▶'
@@ -339,7 +344,12 @@ if has_key(g:plugs, 'vim-go')
   let g:go_highlight_diagnostic_warnings = 1
 
   " fmt
-  let g:go_fmt_command = 'gopls'
+  " https://github.com/segmentio/golines
+  " let g:go_fmt_command = "golines"
+  " let g:go_fmt_options = {
+  "            \ 'golines': '-m 100 -t 8 --no-reformat-tags',
+  "            \ }
+  let g:go_fmt_command = "gopls"
   let g:go_fmt_autosave = 1
   let g:go_fmt_fail_silently = 1
 
@@ -393,7 +403,6 @@ if has_key(g:plugs, 'vim-go')
 
   augroup vim-go-config
     autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
-    autocmd FileType go set number fo+=croq tw=100
     autocmd FileType go set makeprg=go\ build\ .
     autocmd FileType go nmap <Leader>b :<C-u>call <SID>build_go_files()<CR>
     autocmd FileType go nmap <Leader>r <Plug>(go-run)

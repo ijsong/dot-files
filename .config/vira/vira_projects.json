@@ -1,0 +1,14 @@
+{
+    "__kakao__": {
+        "server": "https://jira.daumkakao.com"
+    },
+    "varlog": {
+        "template": "__kakao__",
+        "filter": {
+            "project": "VARLOG"
+        },
+        "newissue": {
+            "project": "VARLOG"
+        }
+    }
+}

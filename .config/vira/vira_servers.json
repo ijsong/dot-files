@@ -1,0 +1,7 @@
+{
+  "https://jira.daumkakao.com": {
+    "username": "jun.song",
+    "password_cmd": "lpass show --password daumkakao.com",
+    "skip_cert_verify": true
+  }
+}
