@@ -79,7 +79,7 @@ set tabstop=4 shiftwidth=4 softtabstop=4
 set fo+=tcroq
 augroup vimrc
   autocmd BufNewFile,BufRead CMakeLists.txt set filetype=cmake
-  autocmd BufNewFile,BufRead *.proto set filetype=proto
+  autocmd BufNewFile,BufRead *.proto setfiletype=proto
   autocmd FileType markdown setlocal spell shiftwidth=0 cino=(s
   autocmd FileType make setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=0
   autocmd FileType c,cpp setlocal textwidth=80 tabstop=2 shiftwidth=2 softtabstop=2
@@ -103,7 +103,7 @@ set updatetime=200
 set noerrorbells visualbell t_vb=
 set wildmenu
 set lazyredraw
-syntax on
+syntax enable
 filetype plugin indent on
 
 " quickfix list
@@ -198,6 +198,9 @@ if has_key(g:plugs, 'vim-clang-format')
   let g:clang_format#auto_format = 0
   let g:clang_format#auto_format_on_insert_leave = 0
   let g:clang_format#auto_formatexpr = 0
+  let g:clang_format#filetype_style_options = {
+              \ 'cpp': { "Standard": "C++11" },
+              \ }
   nmap <Leader>cft :ClangFormatAutoToggle<CR>
   augroup vim-clang-format-config
     autocmd!
