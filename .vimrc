@@ -55,7 +55,7 @@ set matchtime=2
 set scrolloff=2
 set cmdheight=2
 set wrap
-set colorcolumn=80
+set colorcolumn=+1
 set nostartofline
 set shortmess=aT
 
@@ -75,15 +75,15 @@ set smartindent
 set cindent
 set expandtab
 set smarttab
-set textwidth=80
 set tabstop=4 shiftwidth=4 softtabstop=4
 set fo+=tcroq
 augroup vimrc
-  autocmd FileType markdown set shiftwidth=0 cino=(s
-  autocmd FileType make set noexpandtab tabstop=8 shiftwidth=8 softtabstop=0
-  autocmd FileType c,cpp set tabstop=2 shiftwidth=2 softtabstop=2
   autocmd BufNewFile,BufRead CMakeLists.txt set filetype=cmake
   autocmd BufNewFile,BufRead *.proto set filetype=proto
+  autocmd FileType markdown setlocal spell shiftwidth=0 cino=(s
+  autocmd FileType make setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=0
+  autocmd FileType c,cpp setlocal textwidth=80 tabstop=2 shiftwidth=2 softtabstop=2
+  autocmd Filetype gitcommit setlocal spell textwidth=72
 augroup END
 
 " editor
@@ -402,7 +402,7 @@ if has_key(g:plugs, 'vim-go')
   endfunction
 
   augroup vim-go-config
-    autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
+    autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8 textwidth=100
     autocmd FileType go set makeprg=go\ build\ .
     autocmd FileType go nmap <Leader>b :<C-u>call <SID>build_go_files()<CR>
     autocmd FileType go nmap <Leader>r <Plug>(go-run)
