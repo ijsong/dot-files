@@ -204,7 +204,7 @@ if has_key(g:plugs, 'vim-clang-format')
   nmap <Leader>cft :ClangFormatAutoToggle<CR>
   augroup vim-clang-format-config
     autocmd!
-    " autocmd FileType c,cpp ClangFormatAutoEnable
+    autocmd FileType proto ClangFormatAutoEnable
     autocmd FileType c,cpp,objc,proto nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
     autocmd FileType c,cpp,objc,proto vnoremap <buffer><Leader>cf :ClangFormat<CR>
   augroup END
