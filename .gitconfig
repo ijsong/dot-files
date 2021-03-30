@@ -8,7 +8,18 @@
     smudge = git-lfs smudge -- %f
 [pager]
     branch = false
+    # log = false
 [alias]
     co = checkout
     br = branch
     st = status
+    lg = log --graph --oneline --decorate
+# define command which will be used when "nvim" is set as a merge tool
+#[mergetool "nvim"]
+#    cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
+# set "nvim" as tool for merging
+#[merge]
+#    tool = nvim
+# automatically launch merge tool without displaying a prompt
+#[mergetool]
+#    prompt = false
