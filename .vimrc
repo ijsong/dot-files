@@ -275,7 +275,7 @@ if has_key(g:plugs, 'vim-go')
 	endif
 
   " TODO: project-specific settings
-  " let g:go_build_tags = 'e2e,long_e2e,rpc_e2e'
+  let g:go_build_tags = 'e2e,long_e2e,rpc_e2e'
 
   function! s:build_go_files()
     let l:file = expand('%')

@@ -40,11 +40,11 @@ PATH=/usr/local/sbin:$PATH
 export PATH=$PATH
 
 # brew
-alias brewall='brew update; brew cleanup; brew upgrade; brew cask upgrade; brew doctor; brew cask doctor'
+alias brewall='brew update; brew cleanup; brew upgrade; brew upgrade --cask; brew doctor --verbose'
 
 # vi mode
 set -o vi
 
-for f in $(ls $HOME/bash_profile.d/); do
+for f in $(find $HOME/bash_profile.d -type f); do
 	source $f
 done
